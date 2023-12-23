@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>112306017_Rolling Dice</title>
+  <style>
+    .dice {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+    }
+
+    #resultTable {
+      margin-top: 20px;
+      border-collapse: collapse;
+      background-color: lightblue;
+    }
+
+    #resultTable th, #resultTable td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+    #resultTable th {
+      background-color: deepskyblue; 
+      color: white; 
+    }
+
+  </style>
+</head>
+<body onload="start()">
+  <form>
+    <button type="button" id="rollButton" onclick="rollDice()">Roll Dice</button>
+  </form>
+
+  <img id="die1" src="die1.png" alt="blank image">
+  <img id="die2" src="die2.png" alt="blank image">
+  <img id="die3" src="die3.png" alt="blank image">
+  <img id="die4" src="die4.png" alt="blank image">
+  <img id="die5" src="die5.png" alt="blank image">
+  <img id="die6" src="die6.png" alt="blank image"><br>
+  <img id="die7" src="die1.png" alt="blank image">
+  <img id="die8" src="die2.png" alt="blank image">
+  <img id="die9" src="die3.png" alt="blank image">
+  <img id="die10" src="die4.png" alt="blank image">
+  <img id="die11" src="die5.png" alt="blank image">
+  <img id="die12" src="die6.png" alt="blank image">
+
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Face</th>
+        <th>Percent</th>
+      </tr>
+    </thead>
+    <tbody id="resultBody">
+      <!-- Results will be populated dynamically using JavaScript -->
+    </tbody>
+  </table>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      start();
+    });
+
+    function start() {
+      setImage(document.getElementById("die1"));
+      setImage(document.getElementById("die2"));
+      setImage(document.getElementById("die3"));
+      setImage(document.getElementById("die4"));
+      setImage(document.getElementById("die5"));
+      setImage(document.getElementById("die6"));
+      setImage(document.getElementById("die7"));
+      setImage(document.getElementById("die8"));
+      setImage(document.getElementById("die9"));
+      setImage(document.getElementById("die10"));
+      setImage(document.getElementById("die11"));
+      setImage(document.getElementById("die12"));
+
+
+      resetResults();
+    }
+
+    function rollDice() {
+      resetResults();
+
+      const totalDice = 12;
+      const results = Array.from({ length: totalDice }, (_, index) => Math.floor(Math.random() * 6) + 1);
+
+      // Update dice images and calculate percentages
+      updateDiceImages(results);
+      calculatePercentages(results);
+    }
+
+    function setImage(dieImg) {
+      var dieValue = 1; // Set to 1 for reset
+      dieImg.setAttribute("src", "die" + dieValue + ".png");
+      dieImg.setAttribute("alt", "die image with " + dieValue + " spot(s)");
+    }
+
+    function updateDiceImages(results) {
+      results.forEach((result, index) => {
+        const diceImage = document.getElementById(`die${index + 1}`);
+        diceImage.src = `die${result}.png`;
+      });
+    }
+
+    function resetResults() {
+      const resultBody = document.getElementById('resultBody');
+      resultBody.innerHTML = '';
+    }
+
+    function calculatePercentages(results) {
+      const resultBody = document.getElementById('resultBody');
+
+      const occurrences = Array.from({ length: 6 }, () => 0);
+      results.forEach(result => occurrences[result - 1]++);
+
+      occurrences.forEach((count, index) => {
+        const percentage = ((count / results.length) * 100).toFixed(2);
+        const row = `<tr><td>${index + 1}</td><td>${percentage}%</td></tr>`;
+        resultBody.innerHTML += row;
+      });
+    }
+  </script>
+</body>
+</html>
